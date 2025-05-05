@@ -8,7 +8,7 @@ export default class LoginPage {
         <form id="login-form">
           <div>
             <label for="email">Email:</label><br />
-            <input type="text" id="username" name="username" required />
+            <input type="email" id="email" name="email" required />
           </div>
           <div>
             <label for="password">Password</label>
@@ -28,15 +28,23 @@ export default class LoginPage {
     loginForm.addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      const email = loginForm.querySelector("#username").value.trim();
-      const password = loginForm.querySelector("#password").value;
+      const email = loginForm.querySelector("#email").value.trim();
+      const password = loginForm.querySelector("#password").value.trim();
+
+      if (!email || !password) {
+        message.textContent = "Email dan password harus diisi!";
+        return;
+      }
 
       try {
-        const result = await login({ email, password });
-        localStorage.setItem("authToken", result.token);
+        const result = await login(email, password);
+        console.log(result);
+        localStorage.setItem("authToken", result.loginResult.token);
         window.location.hash = "/";
       } catch (error) {
-        message.textContent = error.message || "Login gagal!";
+        message.textContent =
+          error.message ||
+          "Login gagal! Periksa kembali email dan password Anda.";
       }
     });
   }

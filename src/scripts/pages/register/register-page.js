@@ -1,48 +1,58 @@
-// scripts/pages/register/register-page.js
-import { register } from "../../data/api";
+import { register } from "@/scripts/data/api";
 
 export default class RegisterPage {
   async render() {
     return `
       <section class="container">
-        <h1>Register Page</h1>
+        <h1>Register</h1>
         <form id="register-form">
           <div>
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username" required />
+            <label for="name">Name:</label><br />
+            <input type="text" id="name" name="name" required />
           </div>
           <div>
-            <label for="email">Email</label>
+            <label for="email">Email:</label><br />
             <input type="email" id="email" name="email" required />
           </div>
           <div>
-            <label for="password">Password</label>
+            <label for="password">Password:</label><br />
             <input type="password" id="password" name="password" required />
           </div>
           <button type="submit">Register</button>
         </form>
+        <p id="register-message" style="color: red;"></p>
       </section>
     `;
   }
 
   async afterRender() {
     const registerForm = document.querySelector("#register-form");
-    registerForm.addEventListener("submit", async (event) => {
-      event.preventDefault();
-      const username = document.querySelector("#username").value;
-      const email = document.querySelector("#email").value;
-      const password = document.querySelector("#password").value;
+    const message = document.querySelector("#register-message");
+
+    registerForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const name = registerForm.querySelector("#name").value.trim();
+      const email = registerForm.querySelector("#email").value.trim();
+      const password = registerForm.querySelector("#password").value.trim();
+
+      // Validasi input
+      if (!name || !email || !password) {
+        message.textContent = "Semua field harus diisi!";
+        return;
+      }
+
+      if (password.length < 8) {
+        message.textContent = "Password harus minimal 8 karakter!";
+        return;
+      }
 
       try {
-        const response = await register(username, email, password);
-        if (response.token) {
-          localStorage.setItem("authToken", response.token);
-          window.location.hash = "/";
-        } else {
-          alert("Registrasi gagal");
-        }
+        const result = await register({ name, email, password });
+        alert("Registrasi berhasil! Silakan login.");
+        window.location.hash = "/login"; // Redirect ke halaman login
       } catch (error) {
-        alert("Terjadi kesalahan saat registrasi");
+        message.textContent = error.message || "Registrasi gagal! Coba lagi.";
       }
     });
   }

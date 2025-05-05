@@ -41,17 +41,30 @@ class App {
     const url = getActiveRoute();
     const page = routes[url];
 
-    this.#content.innerHTML = await page.render();
-    await page.afterRender();
+    if (page) {
+      this.#content.innerHTML = await page.render();
+      await page.afterRender();
+    } else {
+      this.#content.innerHTML = `<h2>404 - Page Not Found</h2>`;
+    }
   }
 
   #checkUserToken() {
     const token = localStorage.getItem("token");
     if (token) {
-      window.location.hash = "#/login";
-      console.log("Please login first");
+      // Menyembunyikan login/register, menampilkan logout dan story
+      document.getElementById("nav-login").style.display = "none";
+      document.getElementById("nav-register").style.display = "none";
+      document.getElementById("logout-button").style.display = "inline-block";
+      document.getElementById("nav-stories").style.display = "inline-block";
+      document.getElementById("nav-add-story").style.display = "inline-block";
     } else {
-      console.log("user is logged in!");
+      // Menampilkan login/register, menyembunyikan logout dan story
+      document.getElementById("nav-login").style.display = "inline-block";
+      document.getElementById("nav-register").style.display = "inline-block";
+      document.getElementById("logout-button").style.display = "none";
+      document.getElementById("nav-stories").style.display = "none";
+      document.getElementById("nav-add-story").style.display = "none";
     }
   }
 }

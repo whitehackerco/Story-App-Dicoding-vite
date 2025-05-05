@@ -22,7 +22,7 @@ export async function login(email, password) {
   return result;
 }
 
-export async function register(name, email, password) {
+export async function register({ name, email, password }) {
   const response = await fetch(ENDPOINTS.REGISTER, {
     method: "POST",
     headers: {

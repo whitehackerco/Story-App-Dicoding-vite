@@ -15,18 +15,49 @@
 
         <nav id="navigation-drawer" class="navigation-drawer">
           <ul id="nav-list" class="nav-list">
-            <li><a href="#/">Beranda</a></li>
-            <li><a href="#/about">About</a></li>
-            <li><a href="#/login">Login</a></li>
-            <li><a href="#/register">Register</a></li>
+            <li id="nav-beranda"><a href="#/">Beranda</a></li>
+            <li id="nav-about" style="display: none">
+              <a href="#/about">About</a>
+            </li>
+            <li id="nav-login"><a href="#/login">Login</a></li>
+            <li id="nav-register"><a href="#/register">Register</a></li>
+            <li id="nav-stories" style="display: none">
+              <a href="#/stories">Stories</a>
+            </li>
+            <li id="nav-add-story" style="display: none">
+              <a href="#/add-story">Add Story</a>
+            </li>
           </ul>
         </nav>
 
         <button id="drawer-button" class="drawer-button">☰</button>
-        <button id="logout-button" class="drawer-button">Log Out</button>
+        <button id="logout-button" class="drawer-button" style="display: none">
+          Log Out
+        </button>
       </div>
     </header>
 
     <main id="main-content" class="main-content"></main>
+
+    <div id="register-form" style="display: none">
+      <h2>Register</h2>
+      <input type="text" id="register-name" placeholder="Name" />
+      <input type="email" id="register-email" placeholder="Email" />
+      <input type="password" id="register-password" placeholder="Password" />
+      <button id="register-submit">Register</button>
+    </div>
+
+    <div id="login-form" style="display: none">
+      <h2>Login</h2>
+      <input type="email" id="login-email" placeholder="Email" />
+      <input type="password" id="login-password" placeholder="Password" />
+      <button id="login-submit">Login</button>
+    </div>
+
+    <div id="popup" style="display: none">
+      <p>Anda belum memiliki akun, apakah Anda ingin register?</p>
+      <button id="popup-register">Register</button>
+      <button id="popup-cancel">Cancel</button>
+    </div>
   </body>
 </html>

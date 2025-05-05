@@ -84,7 +84,7 @@ header {
   padding: 6px 10px;
 
   display: block;
-  
+
   color: #333;
   text-decoration: none;
 }
@@ -126,4 +126,12 @@ header {
   .drawer-button {
     display: none;
   }
+}
+
+.story-card {
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+  background: #f9f9f9;
 }
