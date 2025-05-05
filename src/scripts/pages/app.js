@@ -1,5 +1,6 @@
-import routes from '../routes/routes';
-import { getActiveRoute } from '../routes/url-parser';
+import routes from "../routes/routes";
+import { getActiveRoute } from "../routes/url-parser";
+import { checkToken } from "../utils/auth";
 
 class App {
   #content = null;
@@ -12,24 +13,25 @@ class App {
     this.#navigationDrawer = navigationDrawer;
 
     this.#setupDrawer();
+    this.#checkUserToken();
   }
 
   #setupDrawer() {
-    this.#drawerButton.addEventListener('click', () => {
-      this.#navigationDrawer.classList.toggle('open');
+    this.#drawerButton.addEventListener("click", () => {
+      this.#navigationDrawer.classList.toggle("open");
     });
 
-    document.body.addEventListener('click', (event) => {
+    document.body.addEventListener("click", (event) => {
       if (
         !this.#navigationDrawer.contains(event.target) &&
         !this.#drawerButton.contains(event.target)
       ) {
-        this.#navigationDrawer.classList.remove('open');
+        this.#navigationDrawer.classList.remove("open");
       }
 
-      this.#navigationDrawer.querySelectorAll('a').forEach((link) => {
+      this.#navigationDrawer.querySelectorAll("a").forEach((link) => {
         if (link.contains(event.target)) {
-          this.#navigationDrawer.classList.remove('open');
+          this.#navigationDrawer.classList.remove("open");
         }
       });
     });
@@ -41,6 +43,16 @@ class App {
 
     this.#content.innerHTML = await page.render();
     await page.afterRender();
+  }
+
+  #checkUserToken() {
+    const token = localStorage.getItem("token");
+    if (token) {
+      window.location.hash = "#/login";
+      console.log("Please login first");
+    } else {
+      console.log("user is logged in!");
+    }
   }
 }
 
