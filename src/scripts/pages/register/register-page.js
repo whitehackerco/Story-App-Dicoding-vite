@@ -36,8 +36,8 @@ export default class RegisterPage {
       try {
         const response = await register(username, email, password);
         if (response.token) {
-          localStorage.setItem("authToken", response.token); // menyimpan token ke localStorage
-          window.location.hash = "/"; // redirect ke home setelah registrasi sukses
+          localStorage.setItem("authToken", response.token);
+          window.location.hash = "/";
         } else {
           alert("Registrasi gagal");
         }
