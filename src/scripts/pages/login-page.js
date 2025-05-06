@@ -1,4 +1,4 @@
-import { login } from "@/scripts/data/api";
+import { login } from "../data/api";
 
 export default class LoginPage {
   async render() {
@@ -7,11 +7,11 @@ export default class LoginPage {
         <h1>Login</h1>
         <form id="login-form">
           <div>
-            <label for="email">Email:</label><br />
+            <label for="email">Email:</label>
             <input type="email" id="email" name="email" required />
           </div>
           <div>
-            <label for="password">Password</label>
+            <label for="password">Password:</label>
             <input type="password" id="password" name="password" required />
           </div>
           <button type="submit">Login</button>
@@ -40,7 +40,9 @@ export default class LoginPage {
         const result = await login(email, password);
         console.log(result);
         localStorage.setItem("authToken", result.loginResult.token);
+        localStorage.setItem("isLoggedIn", "true");
         window.location.hash = "/";
+        location.reload();
       } catch (error) {
         message.textContent =
           error.message ||

@@ -16,24 +16,31 @@ body {
 }
 
 header {
-  background-color: lightskyblue;
+  background-color: rgba(53, 53, 61, 0.712);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.563);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  backdrop-filter: blur(15px);
 }
 
 .main-header {
-  min-height: 90px;
-  padding-block: 20px;
+  min-height: 50px;
+  padding-block: 30px 0;
 
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 30px;
+  gap: 20px;
 }
 
 .brand-name {
   font-size: 1.125rem;
   font-weight: bold;
-  text-decoration: none;
-  color: #333;
+  font-family: 'Courier New', Courier, monospace;
+  font-style: italic;
+  text-decoration: underline;
+  color: #ffffff;
 }
 
 .navigation-drawer {
@@ -85,7 +92,7 @@ header {
 
   display: block;
 
-  color: #333;
+  color: #ffffff;
   text-decoration: none;
 }
 
@@ -99,6 +106,21 @@ header {
 }
 
 /* Write your styles more here */
+
+:root {
+  --transition-duration: 0.5s;
+}
+
+.view-transition {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity var(--transition-duration), transform var(--transition-duration);
+}
+
+.view-transition-active {
+  opacity: 1;
+  transform: translateY(0);
+}
 
 @media screen and (width > 1000px) {
   .navigation-drawer {
@@ -128,10 +150,94 @@ header {
   }
 }
 
+@media screen and (max-width: 768px) {
+  .main-header {
+    padding: 15px 10px;
+  }
+}
+
+@media screen and (min-width: 769px) {
+  .main-header {
+    padding: 20px 30px;
+  }
+}
+
 .story-card {
   border: 1px solid #ccc;
   border-radius: 12px;
   padding: 16px;
   margin-bottom: 20px;
   background: #f9f9f9;
+}
+
+#map {
+  height: 400px;
+  width: 100%;
+  margin-top: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.story-card p {
+  margin: 5px 0;
+}
+
+#camera-controls {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+#camera-controls button {
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#camera-controls button:hover {
+  background-color: #0056b3;
+}
+
+#delete-photo-button {
+  display: none;
+}
+
+.skip-to-content {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: #007bff;
+  color: white;
+  padding: 10px;
+  text-decoration: none;
+  z-index: 1000;
+  transition: top 0.3s;
+}
+
+.skip-to-content:focus {
+  top: 0;
+}
+
+footer {
+  background-color: #f8f9fa;
+  padding: 20px 0;
+  text-align: center;
+  color: #000000;
+}
+
+#logout-button {
+  padding: 8px 12px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+#logout-button:hover {
+  background-color: #c82333;
 }

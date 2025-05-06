@@ -2,7 +2,7 @@ import "../styles/styles.css";
 import CONFIG from "./config.js";
 import App from "./pages/app";
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   const navLogin = document.getElementById("nav-login");
   const navRegister = document.getElementById("nav-register");
   const navAbout = document.getElementById("nav-about");
@@ -12,32 +12,45 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
 
-  if (isLoggedIn) {
-    navLogin.style.display = "none";
-    navRegister.style.display = "none";
-    navAbout.style.display = "block";
-    navStories.style.display = "block";
-    navAddStory.style.display = "block";
-    logoutButton.style.display = "block";
-  } else {
-    navLogin.style.display = "block";
-    navRegister.style.display = "block";
-    navAbout.style.display = "none";
-    navStories.style.display = "none";
-    navAddStory.style.display = "none";
-    logoutButton.style.display = "none";
-  }
+  const updateNavigation = () => {
+    if (isLoggedIn) {
+      navLogin.style.display = "none";
+      navRegister.style.display = "none";
+      navAbout.style.display = "block";
+      navStories.style.display = "block";
+      navAddStory.style.display = "block";
+      logoutButton.style.display = "block";
+    } else {
+      navLogin.style.display = "block";
+      navRegister.style.display = "block";
+      navAbout.style.display = "none";
+      navStories.style.display = "none";
+      navAddStory.style.display = "none";
+      logoutButton.style.display = "none";
+    }
+  };
+
+  updateNavigation();
 
   logoutButton.addEventListener("click", () => {
     localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("token");
-    location.hash = "#/login"; // Redirect to login page
-    location.reload(); // Refresh to apply navigation changes
+    localStorage.removeItem("authToken");
+    window.location.hash = "/login"; // Redirect ke halaman login
+    location.reload(); // Refresh halaman
   });
 
   // Jalankan aplikasi utama (router)
   const app = new App({
     content: document.querySelector("#main-content"),
+    drawerButton: document.getElementById("drawer-button"),
+    navigationDrawer: document.getElementById("navigation-drawer"),
   });
-  app.renderPage();
+
+  await app.renderPage();
+
+  // Tangani perubahan hash untuk navigasi
+  window.addEventListener("hashchange", async () => {
+    await app.renderPage();
+    updateNavigation(); // Perbarui navigasi setiap kali hash berubah
+  });
 });

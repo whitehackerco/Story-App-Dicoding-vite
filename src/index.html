@@ -9,13 +9,14 @@
     <script type="module" src="/scripts/index.js"></script>
   </head>
   <body>
+    <a href="#main-content" class="skip-to-content">Skip to Content</a>
     <header>
       <div class="main-header container">
-        <a class="brand-name" href="#/">App</a>
+        <a class="brand-name" href="#/">SHARE!</a>
 
         <nav id="navigation-drawer" class="navigation-drawer">
           <ul id="nav-list" class="nav-list">
-            <li id="nav-beranda"><a href="#/">Beranda</a></li>
+            <li id="nav-beranda"><a href="#/">Home</a></li>
             <li id="nav-about" style="display: none">
               <a href="#/about">About</a>
             </li>
@@ -32,32 +33,25 @@
 
         <button id="drawer-button" class="drawer-button">☰</button>
         <button id="logout-button" class="drawer-button" style="display: none">
-          Log Out
+          Logout
         </button>
       </div>
     </header>
 
     <main id="main-content" class="main-content"></main>
 
-    <div id="register-form" style="display: none">
-      <h2>Register</h2>
-      <input type="text" id="register-name" placeholder="Name" />
-      <input type="email" id="register-email" placeholder="Email" />
-      <input type="password" id="register-password" placeholder="Password" />
-      <button id="register-submit">Register</button>
-    </div>
-
-    <div id="login-form" style="display: none">
-      <h2>Login</h2>
-      <input type="email" id="login-email" placeholder="Email" />
-      <input type="password" id="login-password" placeholder="Password" />
-      <button id="login-submit">Login</button>
-    </div>
+    <div id="map" style="height: 400px; margin-top: 20px"></div>
 
     <div id="popup" style="display: none">
       <p>Anda belum memiliki akun, apakah Anda ingin register?</p>
       <button id="popup-register">Register</button>
       <button id="popup-cancel">Cancel</button>
     </div>
+
+    <footer>
+      <div class="container">
+        <p>&copy; 2025 App. All rights reserved.</p>
+      </div>
+    </footer>
   </body>
 </html>

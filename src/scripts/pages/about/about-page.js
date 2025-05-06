@@ -3,6 +3,7 @@ export default class AboutPage {
     return `
       <section class="container">
         <h1>About Page</h1>
+        <p>Enaknya isi apa yah ini?</p>
       </section>
     `;
   }

@@ -1,4 +1,4 @@
-import { register } from "@/scripts/data/api";
+import { register } from "../../data/api";
 
 export default class RegisterPage {
   async render() {
@@ -7,15 +7,15 @@ export default class RegisterPage {
         <h1>Register</h1>
         <form id="register-form">
           <div>
-            <label for="name">Name:</label><br />
+            <label for="name">Name:</label>
             <input type="text" id="name" name="name" required />
           </div>
           <div>
-            <label for="email">Email:</label><br />
+            <label for="email">Email:</label>
             <input type="email" id="email" name="email" required />
           </div>
           <div>
-            <label for="password">Password:</label><br />
+            <label for="password">Password:</label>
             <input type="password" id="password" name="password" required />
           </div>
           <button type="submit">Register</button>
