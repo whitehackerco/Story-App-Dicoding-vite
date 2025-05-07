@@ -163,37 +163,55 @@ header {
   }
 }
 
+#stories-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+  padding: 20px;
+}
+
 .story-card {
-  width: 100%;
-  border: 1px solid #ddd;
+  background: #FFFDF0;
+  border: 1px solid #ccc;
   border-radius: 12px;
   padding: 16px;
-  background: #FFFDF0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
   display: flex;
   flex-direction: column;
-  text-align: left
+  align-items: left;
+  justify-content: center;
+
+  width: 100%;
+  height: 100%;
+
+  box-sizing: border-box;
+
+  margin-bottom: 10px;
 }
 
 .story-card img {
-  width: 300px;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
   border-radius: 8px;
   margin-bottom: 12px;
-  object-fit: cover;
-  height: auto;
+  display: block;
+}
+
+.story-card h3 {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 8px 0;
+  color: #333;
 }
 
 .story-card p {
   margin: 6px 0;
   font-size: 14px;
   line-height: 1.5;
-}
-
-#story-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
-  padding: 20px;
+  color: #555;
 }
 
 #map {
@@ -202,10 +220,6 @@ header {
   margin-top: 20px;
   border: 1px solid #ccc;
   border-radius: 8px;
-}
-
-.story-card p {
-  margin: 5px 0;
 }
 
 #camera-controls {

@@ -30,7 +30,6 @@ class AddStoryPage {
   async render() {
     return `
       <section class="container">
-        <h1>Create new post</h1>
         <form id="add-story-form">
           <div>
             <label for="story-description">Deskripsi:</label><br />

@@ -5,7 +5,6 @@ class StoriesPage {
   async render() {
     return `
       <section class="container">
-        <h1>Daftar Cerita</h1>
         <div id="stories-list">Loading...</div>
       </section>
     `;
