@@ -17,12 +17,12 @@ body {
 }
 
 header {
-  background-color: rgba(0, 0, 0, 0.725);
+  background-color: rgba(0, 0, 0, 0.849);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.395);
   position: sticky;
   top: 0;
   z-index: 1000;
-  backdrop-filter: blur(13px);
+  backdrop-filter: blur(15px);
 }
 
 .main-header {
@@ -279,4 +279,30 @@ footer {
 
 #logout-button:hover {
   background-color: #c82333;
+}
+
+#main-content {
+  background-image: url('public/images/hero-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  padding: 20px;
+  color: white;
+}
+
+#main-content::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+#main-content>* {
+  position: relative;
+  z-index: 2;
 }
