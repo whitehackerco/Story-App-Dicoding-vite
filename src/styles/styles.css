@@ -7,6 +7,7 @@
 
 body {
   font-family: 'Arial', sans-serif;
+  background-color: #FFFDF0;
 }
 
 .container {
@@ -16,12 +17,12 @@ body {
 }
 
 header {
-  background-color: rgba(53, 53, 61, 0.712);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.563);
+  background-color: rgba(0, 0, 0, 0.725);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.395);
   position: sticky;
   top: 0;
   z-index: 1000;
-  backdrop-filter: blur(15px);
+  backdrop-filter: blur(13px);
 }
 
 .main-header {
@@ -163,11 +164,36 @@ header {
 }
 
 .story-card {
-  border: 1px solid #ccc;
+  width: 100%;
+  border: 1px solid #ddd;
   border-radius: 12px;
   padding: 16px;
-  margin-bottom: 20px;
-  background: #f9f9f9;
+  background: #FFFDF0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  text-align: left
+}
+
+.story-card img {
+  width: 300px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  object-fit: cover;
+  height: auto;
+}
+
+.story-card p {
+  margin: 6px 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+#story-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  padding: 20px;
 }
 
 #map {
@@ -190,7 +216,6 @@ header {
 
 #camera-controls button {
   padding: 10px 15px;
-  background-color: #007bff;
   color: white;
   border: none;
   border-radius: 5px;

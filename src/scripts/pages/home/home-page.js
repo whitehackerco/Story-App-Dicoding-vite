@@ -3,7 +3,7 @@ export default class HomePage {
     return `
       <section class="container">
         <h1>Home Page</h1>
-        <p>Selamat Datamh di Aplikasi!</p>
+        <p>Save Every Moment and SHARE! Your Happines.</p>
       </section>
     `;
   }

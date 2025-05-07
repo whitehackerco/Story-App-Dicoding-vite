@@ -30,22 +30,28 @@ class AddStoryPage {
   async render() {
     return `
       <section class="container">
-        <h1>Tambah Cerita</h1>
+        <h1>Create new post</h1>
         <form id="add-story-form">
           <div>
             <label for="story-description">Deskripsi:</label><br />
             <textarea id="story-description" name="description" required></textarea>
           </div>
           <div>
-            <label for="story-photo">Foto:</label><br />
-            <input type="file" id="story-photo" name="photo" accept="image/*" />
-            <button type="button" id="open-camera-button">Gunakan Kamera</button>
+           <label for="story-photo">Foto:</label><br />
+           <label for="story-photo" class="fa-button">
+            <i class="fa-solid fa-images"></i> </label>
+            <input type="file" id="story-photo" name="photo" accept="image/*" style="display: none;" />
+
+            <button type="button" id="open-camera-button" class="fa-button"><i class="fa-solid fa-camera"></i></button>
+
             <video id="camera-stream" autoplay style="display: none; width: 100%;"></video>
             <canvas id="camera-canvas" style="display: none;"></canvas>
+
             <div id="camera-controls" style="display: none;">
-              <button type="button" id="capture-photo-button">Ambil Gambar</button>
-              <button type="button" id="delete-photo-button">Hapus Foto</button>
-            </div>
+              <button type="button" id="capture-photo-button" class="fa-button"><i class="fa-sharp fa-solid fa-circle-dot" style="color: #353941"></i></button>
+              <button type="button" id="cancel-camera-button" class="fa-button"><i class="fa-solid fa-circle-minus" style="color: #353941"></i></button>
+              </div>
+              <button type="button" id="delete-photo-button" class="fa-button"><i class="fa-regular fa-circle-xmark" style="color: #eb0000;"></i></button>
           </div>
           <div>
             <label for="location-search">Cari Lokasi:</label><br />
@@ -65,6 +71,7 @@ class AddStoryPage {
 
   async afterRender() {
     const openCameraButton = document.getElementById("open-camera-button");
+    const cancelCameraButton = document.getElementById("cancel-camera-button");
     const cameraStream = document.getElementById("camera-stream");
     const cameraCanvas = document.getElementById("camera-canvas");
     const photoInput = document.getElementById("story-photo");
@@ -91,6 +98,17 @@ class AddStoryPage {
         console.error("Gagal membuka kamera:", error);
         alert("Tidak dapat mengakses kamera.");
       }
+    });
+
+    cancelCameraButton.addEventListener("click", () => {
+      console.log("Tombol Batalkan diklik");
+
+      if (stream) {
+        stream.getTracks().forEach((track) => track.stop());
+      }
+
+      cameraStream.style.display = "none";
+      cameraControls.style.display = "none";
     });
 
     // Ambil gambar dari kamera
