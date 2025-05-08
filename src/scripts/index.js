@@ -35,11 +35,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   logoutButton.addEventListener("click", () => {
     localStorage.removeItem("isLoggedIn");
     localStorage.removeItem("authToken");
-    window.location.hash = "/login"; // Redirect ke halaman login
-    location.reload(); // Refresh halaman
+    window.location.hash = "/login";
+    location.reload();
   });
 
-  // Jalankan aplikasi utama (router)
   const app = new App({
     content: document.querySelector("#main-content"),
     drawerButton: document.getElementById("drawer-button"),
@@ -48,9 +47,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   await app.renderPage();
 
-  // Tangani perubahan hash untuk navigasi
   window.addEventListener("hashchange", async () => {
     await app.renderPage();
-    updateNavigation(); // Perbarui navigasi setiap kali hash berubah
+    updateNavigation();
   });
 });

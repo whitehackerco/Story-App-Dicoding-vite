@@ -29,43 +29,61 @@ async function fetchStories() {
 class AddStoryPage {
   async render() {
     return `
-      <section class="container">
-        <form id="add-story-form">
-          <div>
-            <label for="story-description">Deskripsi:</label><br />
-            <textarea id="story-description" name="description" required></textarea>
-          </div>
-          <div>
-           <label for="story-photo">Foto:</label><br />
-           <label for="story-photo" class="fa-button">
-            <i class="fa-solid fa-images"></i> </label>
+    <section class="add-story container">
+      <h2 class="form-title">New Story</h2>
+      <form id="add-story-form" class="add-story-form">
+        <div class="form-group">
+          <label for="story-description"></label>
+          <textarea id="story-description" name="description" required placeholder="Write your story..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label></label>
+          <div class="photo-buttons">
+            <label for="story-photo" class="fa-button">
+              <i class="fa-solid fa-images" style="color: #000000"></i> Choose File
+            </label>
             <input type="file" id="story-photo" name="photo" accept="image/*" style="display: none;" />
 
-            <button type="button" id="open-camera-button" class="fa-button"><i class="fa-solid fa-camera"></i></button>
+            <button type="button" id="open-camera-button" class="fa-button">
+              <i class="fa-solid fa-camera"></i> Open Camera
+            </button>
 
-            <video id="camera-stream" autoplay style="display: none; width: 100%;"></video>
-            <canvas id="camera-canvas" style="display: none;"></canvas>
+            <button type="button" id="delete-photo-button" class="fa-button danger">
+              <i class="fa-regular fa-circle-xmark"></i> Hapus
+            </button>
+          </div>
+        </div>
 
-            <div id="camera-controls" style="display: none;">
-              <button type="button" id="capture-photo-button" class="fa-button"><i class="fa-sharp fa-solid fa-circle-dot" style="color: #353941"></i></button>
-              <button type="button" id="cancel-camera-button" class="fa-button"><i class="fa-solid fa-circle-minus" style="color: #353941"></i></button>
-              </div>
-              <button type="button" id="delete-photo-button" class="fa-button"><i class="fa-regular fa-circle-xmark" style="color: #eb0000;"></i></button>
+        <div class="camera-container">
+          <video id="camera-stream" autoplay style="display: none;"></video>
+          <canvas id="camera-canvas" style="display: none;"></canvas>
+
+          <div id="camera-controls" class="camera-controls" style="display: none;">
+            <button type="button" id="capture-photo-button" class="fa-button"><i class="fa-solid fa-circle-dot" style="color: #000000"></i></button>
+            <button type="button" id="cancel-camera-button" class="fa-button"><i class="fa-solid fa-circle-minus" style="color: #000000"></i></button>
           </div>
-          <div>
-            <label for="location-search">Cari Lokasi:</label><br />
-            <input type="text" id="location-search" placeholder="Cari lokasi..." />
-            <button type="button" id="search-location-button">Cari</button>
+        </div>
+
+        <div class="form-group">
+          <label for="location-search"></label>
+          <div class="location-search">
+            <input type="text" id="location-search" placeholder="Jakarta" />
+            <button type="button" id="search-location-button" class="fa-button icon-button"><i class="fa-solid fa-magnifying-glass-location" style="color:#000000;"></i></button>
           </div>
-          <div id="map" style="height: 400px; margin-top: 20px;"></div>
-          <input type="hidden" id="latitude" name="latitude" />
-          <input type="hidden" id="longitude" name="longitude" />
-          <input type="hidden" id="location-name" name="location-name" />
-          <button type="submit">Kirim Cerita</button>
-        </form>
-        <p id="form-message" style="color: red;"></p>
-      </section>
-    `;
+        </div>
+
+        <div id="map" class="map-container"></div>
+
+        <input type="hidden" id="latitude" name="latitude" />
+        <input type="hidden" id="longitude" name="longitude" />
+        <input type="hidden" id="location-name" name="location-name" />
+
+        <button type="submit" class="submit-button">Post</button>
+        <p id="form-message" class="form-message"></p>
+      </form>
+    </section>
+  `;
   }
 
   async afterRender() {
@@ -79,10 +97,8 @@ class AddStoryPage {
     const cameraControls = document.getElementById("camera-controls");
     let stream;
 
-    // Sembunyikan tombol "Hapus Foto" secara default
     deletePhotoButton.style.display = "none";
 
-    // Buka kamera
     openCameraButton.addEventListener("click", async () => {
       try {
         stream = await navigator.mediaDevices.getUserMedia({ video: true });
@@ -91,7 +107,6 @@ class AddStoryPage {
         cameraCanvas.style.display = "none";
         cameraControls.style.display = "block";
 
-        // Sembunyikan tombol "Hapus Foto" saat kamera dibuka
         deletePhotoButton.style.display = "none";
       } catch (error) {
         console.error("Gagal membuka kamera:", error);
@@ -108,9 +123,9 @@ class AddStoryPage {
 
       cameraStream.style.display = "none";
       cameraControls.style.display = "none";
+      deletePhotoButton.style.display = "none";
     });
 
-    // Ambil gambar dari kamera
     capturePhotoButton.addEventListener("click", () => {
       console.log("Tombol Ambil Gambar diklik");
 
@@ -125,7 +140,6 @@ class AddStoryPage {
         cameraCanvas.height
       );
 
-      // Konversi gambar ke Blob dan set ke input file
       cameraCanvas.toBlob((blob) => {
         const file = new File([blob], "photo.jpg", { type: "image/jpeg" });
         const dataTransfer = new DataTransfer();
@@ -133,31 +147,25 @@ class AddStoryPage {
         photoInput.files = dataTransfer.files;
       });
 
-      // Nonaktifkan kamera
       stream.getTracks().forEach((track) => track.stop());
       cameraStream.style.display = "none";
       cameraCanvas.style.display = "block";
       cameraControls.style.display = "none";
 
-      // Tampilkan tombol "Hapus Foto" setelah gambar diambil
       console.log("Menampilkan tombol Hapus Foto");
       deletePhotoButton.style.display = "inline-block";
     });
 
-    // Hapus foto dan buka kamera kembali
     deletePhotoButton.addEventListener("click", () => {
       console.log("Tombol Hapus Foto diklik");
 
-      // Kosongkan input file
       photoInput.value = "";
       cameraCanvas.style.display = "none";
       cameraStream.style.display = "block";
       cameraControls.style.display = "block";
 
-      // Sembunyikan tombol "Hapus Foto" saat kamera dibuka kembali
       deletePhotoButton.style.display = "none";
 
-      // Buka kembali kamera
       navigator.mediaDevices.getUserMedia({ video: true }).then((newStream) => {
         stream = newStream;
         cameraStream.srcObject = stream;
@@ -171,39 +179,32 @@ class AddStoryPage {
     const form = document.getElementById("add-story-form");
     const message = document.getElementById("form-message");
 
-    // Inisialisasi peta
-    const map = L.map(mapContainer).setView([-6.2, 106.816666], 5); // Default ke Jakarta
+    const map = L.map(mapContainer).setView([-6.2, 106.816666], 5);
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution:
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(map);
 
-    let marker; // Variabel untuk menyimpan marker yang dipilih
+    let marker;
 
-    // Tambahkan marker saat peta diklik
     map.on("click", async (e) => {
       const { lat, lng } = e.latlng;
 
-      // Hapus marker sebelumnya jika ada
       if (marker) {
         map.removeLayer(marker);
       }
 
-      // Tambahkan marker baru
       marker = L.marker([lat, lng]).addTo(map);
 
-      // Simpan koordinat ke input tersembunyi
       latitudeInput.value = lat;
       longitudeInput.value = lng;
 
-      // Lakukan reverse geocoding untuk mendapatkan nama lokasi
       try {
         const locationResponse = await fetch(
           `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
         );
         const locationResult = await locationResponse.json();
 
-        // Gunakan fallback jika city tidak tersedia
         const locationName =
           locationResult.address.city ||
           locationResult.address.town ||
@@ -212,10 +213,8 @@ class AddStoryPage {
           locationResult.address.country ||
           locationResult.display_name;
 
-        // Simpan nama lokasi ke input tersembunyi
         locationNameInput.value = locationName;
 
-        // Tampilkan popup dengan nama lokasi
         marker
           .bindPopup(
             `
@@ -237,7 +236,6 @@ class AddStoryPage {
       }
     });
 
-    // Fitur pencarian lokasi
     const searchInput = document.getElementById("location-search");
     const searchButton = document.getElementById("search-location-button");
 
@@ -257,23 +255,18 @@ class AddStoryPage {
         if (results.length > 0) {
           const { lat, lon, display_name } = results[0];
 
-          // Pindahkan peta ke lokasi hasil pencarian
           map.setView([lat, lon], 13);
 
-          // Hapus marker sebelumnya jika ada
           if (marker) {
             map.removeLayer(marker);
           }
 
-          // Tambahkan marker baru
           marker = L.marker([lat, lon]).addTo(map);
 
-          // Simpan koordinat dan nama lokasi ke input tersembunyi
           latitudeInput.value = lat;
           longitudeInput.value = lon;
           locationNameInput.value = display_name;
 
-          // Tampilkan popup dengan nama lokasi
           marker
             .bindPopup(
               `
@@ -294,7 +287,6 @@ class AddStoryPage {
       }
     });
 
-    // Tambahkan event listener untuk submit form
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
 
@@ -338,7 +330,6 @@ class AddStoryPage {
           }
         );
 
-        // Log respons dari server
         console.log("Response status:", response.status);
         const responseData = await response.json();
         console.log("Response data:", responseData);
@@ -348,7 +339,7 @@ class AddStoryPage {
         }
 
         alert("Cerita berhasil ditambahkan!");
-        window.location.hash = "/stories"; // Redirect ke halaman Stories
+        window.location.hash = "/stories";
       } catch (error) {
         console.error("Error adding story:", error);
         message.textContent = error.message || "Gagal menambahkan cerita.";

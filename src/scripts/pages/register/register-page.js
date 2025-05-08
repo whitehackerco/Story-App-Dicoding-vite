@@ -36,7 +36,6 @@ export default class RegisterPage {
       const email = registerForm.querySelector("#email").value.trim();
       const password = registerForm.querySelector("#password").value.trim();
 
-      // Validasi input
       if (!name || !email || !password) {
         message.textContent = "Semua field harus diisi!";
         return;
@@ -50,7 +49,7 @@ export default class RegisterPage {
       try {
         const result = await register({ name, email, password });
         alert("Registrasi berhasil! Silakan login.");
-        window.location.hash = "/login"; // Redirect ke halaman login
+        window.location.hash = "/login";
       } catch (error) {
         message.textContent = error.message || "Registrasi gagal! Coba lagi.";
       }

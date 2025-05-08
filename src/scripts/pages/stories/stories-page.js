@@ -49,7 +49,6 @@ class StoriesPage {
             day: "numeric",
           });
 
-          // Reverse geocoding untuk mendapatkan nama lokasi
           let locationText = "<p><strong>Lokasi:</strong> Tidak tersedia</p>";
           if (story.lat && story.lon) {
             try {
@@ -58,7 +57,6 @@ class StoriesPage {
               );
               const locationResult = await locationResponse.json();
 
-              // Gunakan fallback jika city tidak tersedia
               const locationName =
                 locationResult.address?.city ||
                 locationResult.address?.town ||

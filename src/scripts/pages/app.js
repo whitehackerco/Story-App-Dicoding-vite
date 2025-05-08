@@ -42,18 +42,15 @@ class App {
     const page = routes[url];
 
     if (page) {
-      // Tambahkan kelas untuk transisi keluar
       this.#content.classList.add("view-transition");
       this.#content.classList.remove("view-transition-active");
 
-      // Tunggu sedikit sebelum mengganti konten
       setTimeout(async () => {
         this.#content.innerHTML = await page.render();
         await page.afterRender();
 
-        // Tambahkan kelas untuk transisi masuk
         this.#content.classList.add("view-transition-active");
-      }, 100); // Waktu delay untuk transisi keluar
+      }, 100);
     } else {
       this.#content.innerHTML = `<h2>404 - Page Not Found</h2>`;
     }
@@ -64,7 +61,6 @@ class App {
     const isLoggedIn = Boolean(token);
 
     if (isLoggedIn) {
-      // Menyembunyikan login/register, menampilkan logout dan story
       document.getElementById("nav-login").style.display = "none";
       document.getElementById("nav-register").style.display = "none";
       document.getElementById("logout-button").style.display = "inline-block";
@@ -72,7 +68,6 @@ class App {
       document.getElementById("nav-stories").style.display = "inline-block";
       document.getElementById("nav-add-story").style.display = "inline-block";
     } else {
-      // Menampilkan login/register, menyembunyikan logout dan story
       document.getElementById("nav-login").style.display = "inline-block";
       document.getElementById("nav-register").style.display = "inline-block";
       document.getElementById("logout-button").style.display = "none";
