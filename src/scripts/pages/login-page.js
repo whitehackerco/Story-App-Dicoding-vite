@@ -4,9 +4,9 @@ export default class LoginPage {
   async render() {
     return `
       <section class="container">
-        <h1>Login</h1>
         <form id="login-form">
           <div>
+          <h1>Login</h1>
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" required />
           </div>
@@ -25,6 +25,15 @@ export default class LoginPage {
     const loginForm = document.querySelector("#login-form");
     const message = document.querySelector("#login-message");
 
+    const container = document.querySelector(".container");
+    container.style.opacity = 0;
+    container.style.transform = "translateY(30px)";
+    setTimeout(() => {
+      container.style.transition = "all 0.5s ease";
+      container.style.opacity = 1;
+      container.style.transform = "translateY(0)";
+    }, 100);
+
     loginForm.addEventListener("submit", async (e) => {
       e.preventDefault();
 
@@ -36,9 +45,12 @@ export default class LoginPage {
         return;
       }
 
+      const loginButton = loginForm.querySelector("button");
+      loginButton.disabled = true;
+      loginButton.textContent = "Logging in...";
+
       try {
         const result = await login(email, password);
-        console.log(result);
         localStorage.setItem("authToken", result.loginResult.token);
         localStorage.setItem("isLoggedIn", "true");
         window.location.hash = "/";
@@ -47,6 +59,9 @@ export default class LoginPage {
         message.textContent =
           error.message ||
           "Login gagal! Periksa kembali email dan password Anda.";
+      } finally {
+        loginButton.disabled = false;
+        loginButton.textContent = "Login";
       }
     });
   }
