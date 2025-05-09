@@ -48,8 +48,6 @@ export default class AboutPage {
   async afterRender() {
     // Do your job here
     window.scrollTo(0, 0);
-
-    // 2. Animasi ketik untuk judul
     const title = document.querySelector(".about-title");
     const fullTitle = "About the App";
     title.textContent = "";
@@ -63,7 +61,6 @@ export default class AboutPage {
     };
     typeTitle();
 
-    // 3. Tambah atribut data-aos ke elemen (kalau belum ada)
     document
       .querySelectorAll(
         ".about-subtitle, .about-description, .about-list li, .about-developer"
@@ -73,7 +70,6 @@ export default class AboutPage {
         el.setAttribute("data-aos-delay", index * 100);
       });
 
-    // 4. Inisialisasi atau refresh AOS
     if (typeof AOS !== "undefined") {
       AOS.init({ once: true });
     }
