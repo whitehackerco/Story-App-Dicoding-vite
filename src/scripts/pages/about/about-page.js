@@ -10,7 +10,7 @@ export default class AboutPage {
         <div class="about-card">
           <h2 class="about-subtitle">🚀 Main Features</h2>
           <ul class="about-list">
-            <li><i class="fa-solid fa-user"></i> User Registration & Login</li>
+            <li><i class="fa-solid fa-user" aria-hidden="true"></i> User Registration & Login</li>
             <li><i class="fa-solid fa-plus"></i> Add Story with Picture & Description</li>
             <li><i class="fa-solid fa-list"></i> Browse Stories</li>
             <li><i class="fa-solid fa-map"></i> Map Integration with Leaflet</li>

@@ -1,4 +1,5 @@
-import { login } from "../data/api";
+import { LoginModel } from "../data/login-model";
+import { LoginPresenter } from "../presenters/login-presenter";
 
 export default class LoginPage {
   async render() {
@@ -6,7 +7,7 @@ export default class LoginPage {
       <section class="container">
         <form id="login-form">
           <div>
-          <h1>Login</h1>
+            <h1>Login</h1>
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" required />
           </div>
@@ -17,6 +18,7 @@ export default class LoginPage {
           <button type="submit">Login</button>
         </form>
         <p id="login-message" style="color: red;"></p>
+        <p class="login-link">Don't have an account? <a href="#/register">Register here</a></p>
       </section>
     `;
   }
@@ -34,6 +36,9 @@ export default class LoginPage {
       container.style.transform = "translateY(0)";
     }, 100);
 
+    const model = new LoginModel();
+    const presenter = new LoginPresenter(model, this);
+
     loginForm.addEventListener("submit", async (e) => {
       e.preventDefault();
 
@@ -41,28 +46,33 @@ export default class LoginPage {
       const password = loginForm.querySelector("#password").value.trim();
 
       if (!email || !password) {
-        message.textContent = "Email dan password harus diisi!";
+        this.showError("Email dan password harus diisi!");
         return;
       }
 
-      const loginButton = loginForm.querySelector("button");
-      loginButton.disabled = true;
-      loginButton.textContent = "Logging in...";
-
-      try {
-        const result = await login(email, password);
-        localStorage.setItem("authToken", result.loginResult.token);
-        localStorage.setItem("isLoggedIn", "true");
-        window.location.hash = "/";
-        location.reload();
-      } catch (error) {
-        message.textContent =
-          error.message ||
-          "Login gagal! Periksa kembali email dan password Anda.";
-      } finally {
-        loginButton.disabled = false;
-        loginButton.textContent = "Login";
-      }
+      await presenter.handleLogin(email, password);
     });
+  }
+
+  showLoading() {
+    const loginButton = document.querySelector("#login-form button");
+    loginButton.disabled = true;
+    loginButton.textContent = "Logging in...";
+  }
+
+  hideLoading() {
+    const loginButton = document.querySelector("#login-form button");
+    loginButton.disabled = false;
+    loginButton.textContent = "Login";
+  }
+
+  showError(message) {
+    const messageElement = document.querySelector("#login-message");
+    messageElement.textContent = message;
+  }
+
+  showSuccess() {
+    window.location.hash = "/";
+    location.reload();
   }
 }

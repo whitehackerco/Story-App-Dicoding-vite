@@ -42,15 +42,33 @@ class App {
     const page = routes[url];
 
     if (page) {
-      this.#content.classList.add("view-transition");
-      this.#content.classList.remove("view-transition-active");
+      if (document.startViewTransition) {
+        document.startViewTransition(async () => {
+          this.#content.innerHTML = await page.render();
+          await page.afterRender();
+        });
+      } else {
+        const animationOut = this.#content.animate(
+          [
+            { opacity: 1, transform: "translateY(0)" },
+            { opacity: 0, transform: "translateY(20px)" },
+          ],
+          { duration: 500, easing: "ease-out" }
+        );
 
-      setTimeout(async () => {
+        await animationOut.finished;
+
         this.#content.innerHTML = await page.render();
         await page.afterRender();
 
-        this.#content.classList.add("view-transition-active");
-      }, 100);
+        this.#content.animate(
+          [
+            { opacity: 0, transform: "translateY(20px)" },
+            { opacity: 1, transform: "translateY(0)" },
+          ],
+          { duration: 500, easing: "ease-out" }
+        );
+      }
     } else {
       this.#content.innerHTML = `<h2>404 - Page Not Found</h2>`;
     }

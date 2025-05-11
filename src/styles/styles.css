@@ -43,7 +43,7 @@ header {
   font-weight: bold;
   font-style: italic;
   text-decoration: underline;
-  color: #ff9800;
+  color: #ffffff;
 }
 
 .navigation-drawer {
@@ -144,13 +144,14 @@ header {
   justify-content: center;
   width: 100%;
   height: 100%;
-  background: #FFFDF0;
-  border: 1px solid #ccc;
+  background: #0000008a;
+  border: 1px solid #373535;
   border-radius: 12px;
-  padding: 16px;
+  padding: 5%;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
   margin-bottom: 10px;
+  backdrop-filter: blur(5px);
 }
 
 .story-card img {
@@ -166,14 +167,14 @@ header {
   font-size: 18px;
   font-weight: bold;
   margin: 8px 0;
-  color: #333;
+  color: #ffffff;
 }
 
 .story-card p {
   font-size: 14px;
   line-height: 1.5;
   margin: 6px 0;
-  color: #555;
+  color: #ffffff;
 }
 
 
@@ -182,7 +183,7 @@ header {
   margin: auto;
   padding: 2rem;
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .form-title {
@@ -200,11 +201,10 @@ header {
   width: 100%;
   padding: 0.8rem;
   font-size: 1rem;
-  border: 1px solid #cccccc;
+  border: 1px solid #ffffff;
   border-radius: 6px;
   resize: vertical;
 }
-
 
 .photo-buttons {
   display: flex;
@@ -219,7 +219,7 @@ header {
   gap: 0.5rem;
   padding: 0.6rem 1rem;
   font-size: 1rem;
-  background-color: #ffffffbb;
+  background-color: #f7f7f7bb;
   border: none;
   border-radius: 6px;
   cursor: pointer;
@@ -253,7 +253,6 @@ header {
   gap: 16px;
   width: 100%;
   z-index: 2;
-  width: 100%;
   padding: 0 1rem;
 }
 
@@ -283,11 +282,13 @@ header {
   align-items: center;
   gap: 0.5rem;
   width: 100%;
+  ;
 }
 
 .location-search input {
   width: 100%;
   padding-right: 2.5rem;
+  background-color: #ffffff;
 }
 
 .location-search .icon-button {
@@ -327,7 +328,7 @@ header {
   margin-top: 1rem;
   padding: 0.8rem 1.5rem;
   font-size: 1rem;
-  background-color: #0000008b;
+  background-color: #ff9800;
   color: white;
   border: none;
   border-radius: 6px;
@@ -344,18 +345,21 @@ header {
 
 .skip-to-content {
   position: absolute;
-  top: -40px;
+  top: 0;
   left: 0;
-  background: #007bff;
+  z-index: 1001;
+  background-color: #007bff;
   color: white;
-  padding: 10px;
+  padding: 10px 15px;
+  border-radius: 4px;
   text-decoration: none;
-  z-index: 1000;
-  transition: top 0.3s;
+  transform: translateY(-100%);
+  transition: transform 0.3s ease;
 }
 
 .skip-to-content:focus {
-  top: 0;
+  transform: translateY(0);
+  outline: 2px solid #ffffff;
 }
 
 
@@ -380,19 +384,6 @@ footer {
 #logout-button:hover {
   background-color: #c82333;
 }
-
-
-.view-transition {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity var(--transition-duration), transform var(--transition-duration);
-}
-
-.view-transition-active {
-  opacity: 1;
-  transform: translateY(0);
-}
-
 
 @media screen and (width > 1000px) {
   .navigation-drawer {
@@ -704,7 +695,7 @@ footer {
   text-align: center;
 }
 
-/* Shake animation */
+
 @keyframes shake {
   0% {
     transform: translateX(0);
@@ -729,4 +720,68 @@ footer {
 
 .shake {
   animation: shake 0.5s ease;
+}
+
+#login-form {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#login-form input:focus {
+  box-shadow: 0 0 5px #ff9800;
+  border: 1px solid #ff9800;
+}
+
+.login-link {
+  margin-top: 20px;
+  text-align: center;
+  color: #ddd;
+}
+
+.login-link a {
+  color: #ff9800;
+  text-decoration: none;
+}
+
+.login-link a:hover {
+  text-decoration: underline;
+}
+
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #4caf50;
+  color: white;
+  padding: 20px 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  font-size: 16px;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.popup.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.popup.hidden {
+  opacity: 0;
+  visibility: hidden;
 }

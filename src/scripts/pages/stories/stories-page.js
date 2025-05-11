@@ -1,7 +1,9 @@
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import { StoriesModel } from "../../data/stories-model";
+import { StoriesPagePresenter } from "../../presenters/stories-presenter";
 
-class StoriesPage {
+export default class StoriesPage {
   async render() {
     return `
       <section class="container">
@@ -11,84 +13,41 @@ class StoriesPage {
   }
 
   async afterRender() {
-    const storiesList = document.getElementById("stories-list");
-    const token = localStorage.getItem("authToken");
+    const model = new StoriesModel();
+    const presenter = new StoriesPagePresenter(model, this);
+    await presenter.loadStories();
+  }
 
-    if (!token) {
-      storiesList.innerHTML = "<p>Kamu harus login untuk melihat cerita.</p>";
-      return;
-    }
-
-    try {
-      const response = await fetch(
-        "https://story-api.dicoding.dev/v1/stories?location=1",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      const result = await response.json();
-
-      if (result.error) {
-        storiesList.innerHTML = `<p>${result.message}</p>`;
-        return;
-      }
-
-      if (result.listStory.length === 0) {
-        storiesList.innerHTML = "<p>Belum ada cerita yang tersedia.</p>";
-        return;
-      }
-
-      const storiesHtml = await Promise.all(
-        result.listStory.map(async (story) => {
-          const date = new Date(story.createdAt).toLocaleDateString("id-ID", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          });
-
-          let locationText = "<p><strong>Lokasi:</strong> Tidak tersedia</p>";
-          if (story.lat && story.lon) {
-            try {
-              const locationResponse = await fetch(
-                `https://nominatim.openstreetmap.org/reverse?format=json&lat=${story.lat}&lon=${story.lon}`
-              );
-              const locationResult = await locationResponse.json();
-
-              const locationName =
-                locationResult.address?.city ||
-                locationResult.address?.town ||
-                locationResult.address?.village ||
-                locationResult.address?.state ||
-                locationResult.address?.country ||
-                locationResult.display_name;
-
-              locationText = `<p><strong>Lokasi:</strong> ${locationName}</p>`;
-            } catch (error) {
-              console.error("Gagal mendapatkan lokasi:", error);
-            }
-          }
-
-          return `
-            <div class="story-card">
-              <img src="${story.photoUrl}" alt="Foto cerita oleh ${story.name}" width="200" />
-              <h3>${story.name}</h3>
-              <p><strong>Tanggal:</strong> ${date}</p>
-              <p>${story.description}</p>
-              ${locationText}
+  renderStories(stories) {
+    const storiesHtml = stories
+      .map(
+        (story) => `
+          <div class="story-card">
+            <img src="${story.photo}" alt="${story.name}" class="story-image" />
+            <div class="story-content">
+              <h3 class="story-username">${story.name}</h3>
+              <p class="story-description">${story.description}</p>
+              <p class="story-date">${new Date(
+                story.createdAt
+              ).toLocaleDateString()}</p>
+              <p class="story-location">${story.location}</p>
             </div>
-          `;
-        })
-      );
+          </div>
+        `
+      )
+      .join("");
 
-      storiesList.innerHTML = storiesHtml.join("");
-    } catch (error) {
-      console.error("Gagal memuat cerita:", error);
-      storiesList.innerHTML = "<p>Terjadi kesalahan saat memuat cerita.</p>";
-    }
+    const storiesList = document.getElementById("stories-list");
+    storiesList.innerHTML = storiesHtml;
+  }
+
+  renderError(message) {
+    const storiesList = document.getElementById("stories-list");
+    storiesList.innerHTML = `<p>${message}</p>`;
+  }
+
+  showLoading() {
+    const storiesList = document.getElementById("stories-list");
+    storiesList.innerHTML = "<p>Loading...</p>";
   }
 }
-
-export default StoriesPage;

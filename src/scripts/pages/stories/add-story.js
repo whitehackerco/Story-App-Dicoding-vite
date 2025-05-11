@@ -26,6 +26,45 @@ async function fetchStories() {
   return result.listStory;
 }
 
+async function postStory() {
+  try {
+    const response = await fetch("https://api.example.com/stories", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+      },
+      body: JSON.stringify({
+        description: "Deskripsi cerita",
+        photo: "URL foto",
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Gagal menambahkan cerita");
+    }
+
+    showSuccessPopup("Cerita berhasil ditambahkan!");
+  } catch (error) {
+    console.error(error);
+    alert("Terjadi kesalahan. Silakan coba lagi.");
+  }
+}
+
+function showSuccessPopup(message) {
+  const popup = document.getElementById("success-popup");
+  const popupMessage = document.getElementById("popup-message");
+
+  popupMessage.textContent = message;
+  popup.classList.remove("hidden");
+  popup.classList.add("show");
+
+  setTimeout(() => {
+    popup.classList.remove("show");
+    popup.classList.add("hidden");
+  }, 3000);
+}
+
 class AddStoryPage {
   async render() {
     return `
@@ -33,7 +72,7 @@ class AddStoryPage {
       <h2 class="form-title">New Story</h2>
       <form id="add-story-form" class="add-story-form">
         <div class="form-group">
-          <label for="story-description"></label>
+          <label for="story-description">Story Description:</label>
           <textarea id="story-description" name="description" required placeholder="Write your story..."></textarea>
         </div>
 
@@ -66,7 +105,7 @@ class AddStoryPage {
         </div>
 
         <div class="form-group">
-          <label for="location-search"></label>
+          <label for="location-search">Search Location:</label>
           <div class="location-search">
             <input type="text" id="location-search" placeholder="Jakarta" />
             <button type="button" id="search-location-button" class="fa-button icon-button"><i class="fa-solid fa-magnifying-glass-location" style="color:#000000;"></i></button>
@@ -82,6 +121,10 @@ class AddStoryPage {
         <button type="submit" class="submit-button">Post</button>
         <p id="form-message" class="form-message"></p>
       </form>
+
+      <div id="success-popup" class="popup hidden">
+          <p id="popup-message">Cerita berhasil ditambahkan!</p>
+        </div>
     </section>
   `;
   }
@@ -180,10 +223,31 @@ class AddStoryPage {
     const message = document.getElementById("form-message");
 
     const map = L.map(mapContainer).setView([-6.2, 106.816666], 5);
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution:
-        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    }).addTo(map);
+
+    const openStreetMap = L.tileLayer(
+      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+      {
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      }
+    );
+
+    const mapTilerSatellite = L.tileLayer(
+      "https://api.maptiler.com/maps/hybrid/{z}/{x}/{y}.jpg?key=MAPTILER_KEY",
+      {
+        attribution:
+          '&copy; <a href="https://www.maptiler.com/copyright/">MapTiler</a> contributors',
+      }
+    );
+
+    openStreetMap.addTo(map);
+
+    const baseLayers = {
+      OpenStreetMap: openStreetMap,
+      "Satellite (MapTiler)": mapTilerSatellite,
+    };
+
+    L.control.layers(baseLayers).addTo(map);
 
     let marker;
 
@@ -277,7 +341,7 @@ class AddStoryPage {
             )
             .openPopup();
 
-          alert(`Lokasi ditemukan: ${display_name}`);
+          showSuccessPopup(`Lokasi ditemukan: ${display_name}`);
         } else {
           alert("Lokasi tidak ditemukan.");
         }
@@ -338,8 +402,10 @@ class AddStoryPage {
           throw new Error(responseData.message || "Gagal menambahkan cerita.");
         }
 
-        alert("Cerita berhasil ditambahkan!");
-        window.location.hash = "/stories";
+        showSuccessPopup("Cerita berhasil ditambahkan!");
+        setTimeout(() => {
+          window.location.hash = "/stories";
+        }, 3000);
       } catch (error) {
         console.error("Error adding story:", error);
         message.textContent = error.message || "Gagal menambahkan cerita.";
