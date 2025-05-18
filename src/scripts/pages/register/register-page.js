@@ -1,4 +1,4 @@
-import { register } from "../../data/api";
+import { RegisterPresenter } from "../../presenters/register-presenter";
 
 export default class RegisterPage {
   async render() {
@@ -27,7 +27,11 @@ export default class RegisterPage {
 
   async afterRender() {
     const form = document.querySelector("#register-form");
-    const message = document.querySelector("#register-message");
+    this.message = document.querySelector("#register-message");
+    this.btn = form.querySelector("button");
+    this.form = form;
+
+    const presenter = new RegisterPresenter(this);
 
     const container = document.querySelector(".register-page");
     container.style.opacity = 0;
@@ -40,45 +44,31 @@ export default class RegisterPage {
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
-
       const name = form.querySelector("#name").value.trim();
       const email = form.querySelector("#email").value.trim();
       const password = form.querySelector("#password").value.trim();
-
-      if (!name || !email || !password) {
-        message.textContent = "Semua field harus diisi!";
-        shakeForm(form);
-        return;
-      }
-
-      if (password.length < 8) {
-        message.textContent = "Password harus minimal 8 karakter!";
-        shakeForm(form);
-        return;
-      }
-
-      const btn = form.querySelector("button");
-      btn.disabled = true;
-      btn.textContent = "Registering...";
-
-      try {
-        await register({ name, email, password });
-        alert("Registrasi berhasil! Silakan login.");
-        window.location.hash = "/login";
-      } catch (error) {
-        message.textContent = error.message || "Registrasi gagal! Coba lagi.";
-        shakeForm(form);
-      } finally {
-        btn.disabled = false;
-        btn.textContent = "Register";
-      }
+      presenter.handleRegister({ name, email, password });
     });
+  }
 
-    function shakeForm(element) {
-      element.classList.add("shake");
-      setTimeout(() => {
-        element.classList.remove("shake");
-      }, 500);
-    }
+  showMessage(msg) {
+    this.message.textContent = msg;
+  }
+
+  showSuccess(msg) {
+    alert(msg);
+    window.location.hash = "/login";
+  }
+
+  setLoading(isLoading) {
+    this.btn.disabled = isLoading;
+    this.btn.textContent = isLoading ? "Registering..." : "Register";
+  }
+
+  shakeForm() {
+    this.form.classList.add("shake");
+    setTimeout(() => {
+      this.form.classList.remove("shake");
+    }, 500);
   }
 }

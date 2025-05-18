@@ -1,6 +1,7 @@
 import routes from "../routes/routes";
 import { getActiveRoute } from "../routes/url-parser";
 import { checkToken } from "../utils/auth";
+import CameraManager from "../utils/camera-manager";
 
 class App {
   #content = null;
@@ -41,10 +42,12 @@ class App {
     const url = getActiveRoute();
     const page = routes[url];
 
+    CameraManager.stopAllStreams();
+
     if (page) {
       if (document.startViewTransition) {
         document.startViewTransition(async () => {
-          this.#content.innerHTML = await page.render();
+          this.#content.innerHTML = `<div id="main-content" tabindex="-1">${await page.render()}</div>`;
           await page.afterRender();
         });
       } else {
@@ -58,7 +61,7 @@ class App {
 
         await animationOut.finished;
 
-        this.#content.innerHTML = await page.render();
+        this.#content.innerHTML = `<div id="main-content" tabindex="-1">${await page.render()}</div>`;
         await page.afterRender();
 
         this.#content.animate(

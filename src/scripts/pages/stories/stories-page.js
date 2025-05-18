@@ -7,6 +7,7 @@ export default class StoriesPage {
   async render() {
     return `
       <section class="container">
+        <div id="map" class="map-container"></div>
         <div id="stories-list">Loading...</div>
       </section>
     `;
@@ -49,5 +50,27 @@ export default class StoriesPage {
   showLoading() {
     const storiesList = document.getElementById("stories-list");
     storiesList.innerHTML = "<p>Loading...</p>";
+  }
+
+  renderMap(stories) {
+    const map = L.map("map").setView([-6.2, 106.816666], 5);
+
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    }).addTo(map);
+
+    stories.forEach((story) => {
+      if (story.latitude && story.longitude) {
+        const marker = L.marker([story.latitude, story.longitude]).addTo(map);
+        marker.bindPopup(`
+          <div>
+            <h3>${story.name}</h3>
+            <p>${story.description}</p>
+            <p><strong>Lokasi:</strong> ${story.location}</p>
+          </div>
+        `);
+      }
+    });
   }
 }

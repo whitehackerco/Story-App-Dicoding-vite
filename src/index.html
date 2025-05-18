@@ -15,11 +15,12 @@
     />
   </head>
   <body>
-    <a href="#main-content" class="skip-to-content">Skip to Content</a>
     <header>
+      <a href="#main-content" id="skip-to-content" class="skip-to-content"
+        >Skip to Content</a
+      >
       <div class="main-header container">
         <a class="brand-name" href="#/">SHARE!</a>
-
         <nav id="navigation-drawer" class="navigation-drawer">
           <ul id="nav-list" class="nav-list">
             <li id="nav-beranda"><a href="#/">Home</a></li>
@@ -36,7 +37,6 @@
             </li>
           </ul>
         </nav>
-
         <button id="drawer-button" class="drawer-button">☰</button>
         <button id="logout-button" class="drawer-button" style="display: none">
           Logout
@@ -44,7 +44,7 @@
       </div>
     </header>
 
-    <main id="main-content" class="main-content"></main>
+    <main id="main-content" class="main-content" tabindex="-1"></main>
 
     <div id="popup" style="display: none">
       <p>Anda belum memiliki akun, apakah Anda ingin register?</p>

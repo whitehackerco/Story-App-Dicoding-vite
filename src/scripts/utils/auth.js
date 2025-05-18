@@ -1,12 +1,12 @@
 export function checkToken() {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("authToken");
   return Boolean(token);
 }
 
 export function saveToken(token) {
-  localStorage.setItem("token", token);
+  localStorage.setItem("authToken", token);
 }
 
 export function removeToken() {
-  localStorage.removeItem("token");
+  localStorage.removeItem("authToken");
 }

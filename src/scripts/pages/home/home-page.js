@@ -1,3 +1,5 @@
+import { HomePagePresenter } from "../../presenters/home-presenter";
+
 export default class HomePage {
   async render() {
     return `
@@ -14,17 +16,8 @@ export default class HomePage {
   }
 
   async afterRender() {
-    const token = localStorage.getItem("authToken");
-    const ctaLink = token ? "#/stories" : "#/login";
-
-    const ctaHTML = `
-    <a href="${ctaLink}" class="btn-cta">Let's Get Started</a>
-  `;
-
-    const ctaContainer = document.getElementById("cta-container");
-    if (ctaContainer) {
-      ctaContainer.innerHTML = ctaHTML;
-    }
+    const presenter = new HomePagePresenter(this);
+    presenter.setupCTA();
 
     const mainEl = document.getElementById("typewriter-main");
     const subEl = document.getElementById("typewriter-sub");
@@ -54,5 +47,13 @@ export default class HomePage {
     };
 
     typeMain();
+  }
+
+  renderCTA(ctaLink) {
+    const ctaHTML = `<a href="${ctaLink}" class="btn-cta">Let's Get Started</a>`;
+    const ctaContainer = document.getElementById("cta-container");
+    if (ctaContainer) {
+      ctaContainer.innerHTML = ctaHTML;
+    }
   }
 }
