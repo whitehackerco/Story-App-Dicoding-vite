@@ -6,6 +6,9 @@
     <link rel="shortcut icon" href="/favicon.png" />
     <title>SHARE</title>
 
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#4f46e5" />
+
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script type="module" src="/scripts/index.js"></script>
@@ -35,6 +38,9 @@
             <li id="nav-add-story" style="display: none">
               <a href="#/add-story">Add Story</a>
             </li>
+            <li id="nav-bookmark" style="display: none">
+              <a href="#/bookmark">Bookmark</a>
+            </li>
           </ul>
         </nav>
         <button id="drawer-button" class="drawer-button">☰</button>
@@ -50,6 +56,19 @@
       <p>Anda belum memiliki akun, apakah Anda ingin register?</p>
       <button id="popup-register">Register</button>
       <button id="popup-cancel">Cancel</button>
+    </div>
+
+    <div class="push-actions">
+      <button id="subscribe-push" aria-label="Notification On">
+        <i class="fa-solid fa-bell"></i>
+      </button>
+      <button
+        id="unsubscribe-push"
+        aria-label="Notification Off"
+        style="display: none"
+      >
+        <i class="fa-solid fa-bell-slash"></i>
+      </button>
     </div>
 
     <footer>

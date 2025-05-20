@@ -42,6 +42,7 @@ export class StoriesModel {
         }
 
         return {
+          id: story.id,
           photo: story.photoUrl,
           name: story.name,
           description: story.description,
@@ -96,5 +97,22 @@ export class StoriesModel {
     );
     if (!response.ok) throw new Error("Gagal mencari lokasi.");
     return await response.json();
+  }
+
+  async fetchStoryDetail(id) {
+    const token = localStorage.getItem("authToken");
+    const response = await fetch(
+      `https://story-api.dicoding.dev/v1/stories/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    const result = await response.json();
+    if (!response.ok) {
+      throw new Error(result.message || "Gagal memuat detail cerita.");
+    }
+    return result.story;
   }
 }

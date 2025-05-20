@@ -30,16 +30,15 @@ export default class StoriesPage {
               <p class="story-description">${story.description}</p>
               <p class="story-date">${new Date(
                 story.createdAt
-              ).toLocaleDateString()}</p>
+              ).toLocaleString()}</p>
               <p class="story-location">${story.location}</p>
+              <a href="#/stories/${story.id}" class="btn-cta">Detail Story</a>
             </div>
           </div>
         `
       )
       .join("");
-
-    const storiesList = document.getElementById("stories-list");
-    storiesList.innerHTML = storiesHtml;
+    document.getElementById("stories-list").innerHTML = storiesHtml;
   }
 
   renderError(message) {

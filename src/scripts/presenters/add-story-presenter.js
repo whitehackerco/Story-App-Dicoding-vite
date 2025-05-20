@@ -39,6 +39,16 @@ export class AddStoryPresenter {
     try {
       await this.model.postStory({ description, photo, latitude, longitude });
       this.view.showSuccess("Cerita berhasil ditambahkan!");
+
+      if ("Notification" in window && Notification.permission === "granted") {
+        navigator.serviceWorker.getRegistration().then((reg) => {
+          if (reg) {
+            reg.showNotification("Story successfully created!", {
+              body: `You have created a new story with a description: ${description}`,
+            });
+          }
+        });
+      }
     } catch (error) {
       this.view.showError(error.message || "Gagal menambahkan cerita.");
     }

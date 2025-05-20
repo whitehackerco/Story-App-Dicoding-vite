@@ -18,7 +18,7 @@ export default class AboutPage {
             </div>
             <div class="about-feature-image prominent-image">
               <img 
-                src="./public/images/preview-map.png" 
+                src="/images/preview-map.png" 
                 alt="Preview of map feature in Share App"
                 class="preview-map prominent-img"
               />
@@ -27,7 +27,7 @@ export default class AboutPage {
           <div class="about-feature-row">
             <div class="about-feature-image prominent-image">
               <img 
-                src="./public/images/story-preview.png" 
+                src="/images/story-preview.png" 
                 alt="Preview of Story list in Share App"
                 class="preview-story prominent-img"
               />

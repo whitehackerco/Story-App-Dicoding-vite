@@ -1,6 +1,7 @@
 import "../styles/styles.css";
 import CONFIG from "./config.js";
 import App from "./pages/app";
+import { subscribePush, unsubscribePush } from "./utils/push-subscription";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const navLogin = document.getElementById("nav-login");
@@ -122,4 +123,53 @@ document.addEventListener("DOMContentLoaded", async () => {
     updateNavigation();
     setupSkipToContent();
   });
+
+  const pushBtn = document.getElementById("subscribe-push");
+  const bellIcon = pushBtn.querySelector("i");
+
+  async function updatePushUI() {
+    if (!("serviceWorker" in navigator)) return;
+    const reg = await navigator.serviceWorker.getRegistration();
+    if (!reg) return;
+    const sub = await reg.pushManager.getSubscription();
+    if (sub) {
+      bellIcon.classList.remove("fa-bell");
+      bellIcon.classList.add("fa-bell-slash");
+      pushBtn.setAttribute("aria-label", "Notification Off");
+      pushBtn.title = "Matikan Notifikasi";
+      pushBtn.dataset.subscribed = "true";
+    } else {
+      bellIcon.classList.remove("fa-bell-slash");
+      bellIcon.classList.add("fa-bell");
+      pushBtn.setAttribute("aria-label", "Notification On");
+      pushBtn.title = "Aktifkan Notifikasi";
+      pushBtn.dataset.subscribed = "false";
+    }
+  }
+
+  pushBtn.addEventListener("click", async () => {
+    const reg = await navigator.serviceWorker.getRegistration();
+    const token = localStorage.getItem("authToken");
+    const vapidKey =
+      "BCCs2eonMI-6H2ctvFaWg-UYdDv387Vno_bzUzALpB442r2lCnsHmtrx8biyPi_E-1fSGABK_Qs_GlvPoJJqxbk";
+    if (pushBtn.dataset.subscribed === "true") {
+      try {
+        await unsubscribePush(reg, token);
+        await updatePushUI();
+        alert("Notifikasi dimatikan!");
+      } catch (e) {
+        alert("Gagal unsubscribe notifikasi.");
+      }
+    } else {
+      try {
+        await subscribePush(reg, vapidKey, token);
+        await updatePushUI();
+        alert("Notifikasi diaktifkan!");
+      } catch (e) {
+        alert("Gagal subscribe notifikasi.");
+      }
+    }
+  });
+
+  updatePushUI();
 });

@@ -41,7 +41,6 @@ class App {
   async renderPage() {
     const url = getActiveRoute();
     const page = routes[url];
-
     CameraManager.stopAllStreams();
 
     if (page) {
@@ -73,7 +72,7 @@ class App {
         );
       }
     } else {
-      this.#content.innerHTML = `<h2>404 - Page Not Found</h2>`;
+      this.#content.innerHTML = "<h2>Halaman tidak ditemukan.</h2>";
     }
   }
 
