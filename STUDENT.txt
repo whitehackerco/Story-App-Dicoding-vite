@@ -1,2 +1,2 @@
-APP_URL=<url_aplikasi>
+APP_URL=<https://peaceful-melba-44b801.netlify.app/>
 MAP_SERVICE_API_KEY=<GSyrJvdjYWpBr2Ea5bXP>
