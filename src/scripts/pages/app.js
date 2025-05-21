@@ -87,6 +87,7 @@ class App {
       document.getElementById("nav-about").style.display = "inline-block";
       document.getElementById("nav-stories").style.display = "inline-block";
       document.getElementById("nav-add-story").style.display = "inline-block";
+      document.getElementById("nav-bookmark").style.display = "inline-block";
     } else {
       document.getElementById("nav-login").style.display = "inline-block";
       document.getElementById("nav-register").style.display = "inline-block";
@@ -94,6 +95,7 @@ class App {
       document.getElementById("nav-about").style.display = "none";
       document.getElementById("nav-stories").style.display = "none";
       document.getElementById("nav-add-story").style.display = "none";
+      document.getElementById("nav-bookmark").style.display = "none";
     }
   }
 }

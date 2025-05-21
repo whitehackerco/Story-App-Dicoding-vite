@@ -10,10 +10,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   const navStories = document.getElementById("nav-stories");
   const navAddStory = document.getElementById("nav-add-story");
   const logoutButton = document.getElementById("logout-button");
+  const navBookmark = document.getElementById("nav-bookmark");
 
   const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
 
   const updateNavigation = () => {
+    const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
     if (isLoggedIn) {
       navLogin.style.display = "none";
       navRegister.style.display = "none";
@@ -21,6 +23,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       navStories.style.display = "block";
       navAddStory.style.display = "block";
       logoutButton.style.display = "block";
+      navBookmark.style.display = "block";
     } else {
       navLogin.style.display = "block";
       navRegister.style.display = "block";
@@ -28,6 +31,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       navStories.style.display = "none";
       navAddStory.style.display = "none";
       logoutButton.style.display = "none";
+      navBookmark.style.display = "none";
     }
   };
 
